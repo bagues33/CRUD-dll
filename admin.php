@@ -2,13 +2,17 @@
 
 require "koneksi.php";
 
-$mahasiswa = query("SELECT * FROM mahasiswa");
+$mahasiswa = query("SELECT * FROM mahasiswa ORDER BY id_mhs DESC");
 
 // while ( $mhs = mysqli_fetch_assoc($result)) {
 
 // var_dump($mhs);
 
 // };
+//tombol cari diinput
+if( isset($_POST["cari"]) ) {
+	$mahasiswa = cari($_POST["keyword"]);
+}
 
  ?>
 
@@ -22,16 +26,21 @@ $mahasiswa = query("SELECT * FROM mahasiswa");
 	<a href="tambah.php">Tambah</a>
 	<br>
 	<br>
+	<form action="" method="POST">
+		<input type="text" name="keyword" autofocus placeholder="Masukkan keyword pencarian" size="30" autocomplete="off">
+		<button type="submit" name="cari">Cari</button>
+	</form>
 	<table border="1" cellspacing="2" cellpadding="5">
 		<tr>
 			<th>No.</th>
 			<th>Aksi</th>
-			<th>Gambar</th>
+			<th>Nim</th>
 			<th>NRP</th>
 			<th>Nama</th>
 			<th>Email</th>
 			<th>Jurusan</th>
 			<th>Alamat</th>
+			<th>Gambar</th>
 		</tr>
 		<?php $i = 1; ?>
 		<?php foreach ($mahasiswa as $row) { ?>
@@ -45,6 +54,7 @@ $mahasiswa = query("SELECT * FROM mahasiswa");
 			<td><?php echo $row["jenis_kelamin"]; ?></td>
 			<td><?php echo $row["jurusan"]; ?></td>
 			<td><?php echo $row["alamat"]; ?></td>
+			<td><img src="img/<?php echo $row["gambar"]; ?>" width="100px"></td>
 		</tr>
 		<?php $i++; ?>
 		<?php } ?>

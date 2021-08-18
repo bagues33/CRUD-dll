@@ -4,6 +4,7 @@ require "koneksi.php";
 
 if (isset($_POST["submit"])) {
 
+
 	if (tambah($_POST) > 0) {
 		echo "
 			<script>
@@ -12,7 +13,9 @@ if (isset($_POST["submit"])) {
 			</script>
 		";
 	} else {
-		echo "Gagal!";
+		echo "<script>
+				alert('Gagal');
+				</script>";
 		echo "<br>";
 		echo mysqli_error($koneksi);
 	}
@@ -29,7 +32,7 @@ if (isset($_POST["submit"])) {
 <body>
 	<h1>Tambah Data Mahasiswa</h1>
 	<a href="admin.php">Kembali</a>
-	<form action="" method="POST">
+	<form action="" method="POST" enctype="multipart/form-data">
 		<ul>
 			
 			<li>
@@ -55,6 +58,10 @@ if (isset($_POST["submit"])) {
 			<li>
 				<label for="alamat">Alamat : </label>
 				<input type="text" name="alamat" id="alamat">
+			</li>
+			<li>
+				<label for="gambar">Gambar : </label>
+				<input type="file" name="gambar" id="gambar" >
 			</li>
 		</ul>
 		<button type="submit" name="submit">Tambah</button>
