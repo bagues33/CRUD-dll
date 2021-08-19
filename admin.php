@@ -1,8 +1,32 @@
 <?php 
 
-require "koneksi.php";
+session_start();
 
-$mahasiswa = query("SELECT * FROM mahasiswa ORDER BY id_mhs DESC");
+if( !isset($_SESSION["login"]) ) {
+
+	header("location: login.php");
+	exit;
+}
+
+require "koneksi.php";
+	
+//pagination
+//konfigurasi
+$jumlahDataPerHalaman = 2;
+$jumlahData = count(query("SELECT * FROM mahasiswa"));
+$jumlahHalaman = ceil($jumlahData / $jumlahDataPerHalaman);
+
+$halamanAktif = (isset($_GET["halaman"])) ? $_GET["halaman"] : 1;
+$awalData = ( $jumlahDataPerHalaman * $halamanAktif ) - $jumlahDataPerHalaman;
+// if(isset($_GET["halaman"])) {		
+// 	$halamanAktif = $_GET["halaman"];
+// } else {
+// 	$halamanAktif = 1;
+// }
+
+$mahasiswa = query("SELECT * FROM mahasiswa LIMIT $awalData, $jumlahDataPerHalaman ");
+
+// $mahasiswa = query("SELECT * FROM mahasiswa ORDER BY id_mhs DESC");
 
 // while ( $mhs = mysqli_fetch_assoc($result)) {
 
@@ -22,6 +46,7 @@ if( isset($_POST["cari"]) ) {
 	<title>Halaman Admin</title>
 </head>
 <body>
+	<a href="logout.php">Logout!</a>
 	<h1>Daftar Mahasiswa</h1>
 	<a href="tambah.php">Tambah</a>
 	<br>
@@ -29,7 +54,23 @@ if( isset($_POST["cari"]) ) {
 	<form action="" method="POST">
 		<input type="text" name="keyword" autofocus placeholder="Masukkan keyword pencarian" size="30" autocomplete="off">
 		<button type="submit" name="cari">Cari</button>
-	</form>
+	</form> <br>
+
+<!--navigasi  -->
+<?php if($halamanAktif > 1) { ?>
+	<a href="?halaman=<?php echo $halamanAktif - 1 ?>">&lt;</a>
+<?php } ?>
+	<?php for($i = 1; $i <= $jumlahHalaman; $i++) { ?>
+		<?php if($i == $halamanAktif) { ?>
+			<a href="?halaman=<?php echo $i ?>" style="font-size: 20px; color: red;"><?php echo $i ?></a>
+			<?php } else { ?>
+			<a href="?halaman=<?php echo $i ?>"><?php echo $i ?></a>
+		<?php } ?>
+	<?php } ?>
+<?php if($halamanAktif < $jumlahHalaman) { ?>
+	<a href="?halaman=<?php echo $halamanAktif + 1 ?>">&gt;</a>
+<?php } ?>
+
 	<table border="1" cellspacing="2" cellpadding="5">
 		<tr>
 			<th>No.</th>
