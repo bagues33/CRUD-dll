@@ -46,14 +46,14 @@ if( isset($_POST["cari"]) ) {
 	<title>Halaman Admin</title>
 </head>
 <body>
-	<a href="logout.php">Logout!</a>
+	<a href="logout.php">Logout!</a> | <a href="cetak.php" target="_blank">Cetak</a>
 	<h1>Daftar Mahasiswa</h1>
 	<a href="tambah.php">Tambah</a>
 	<br>
 	<br>
 	<form action="" method="POST">
-		<input type="text" name="keyword" autofocus placeholder="Masukkan keyword pencarian" size="30" autocomplete="off">
-		<button type="submit" name="cari">Cari</button>
+		<input type="text" name="keyword" autofocus placeholder="Masukkan keyword pencarian" size="30" autocomplete="off" id="keyword">
+		<button type="submit" name="cari" id="tombol-cari">Cari</button>
 	</form> <br>
 
 <!--navigasi  -->
@@ -71,7 +71,8 @@ if( isset($_POST["cari"]) ) {
 	<a href="?halaman=<?php echo $halamanAktif + 1 ?>">&gt;</a>
 <?php } ?>
 
-	<table border="1" cellspacing="2" cellpadding="5">
+<div id="container">
+	 <table border="1" cellspacing="2" cellpadding="5"> 
 		<tr>
 			<th>No.</th>
 			<th>Aksi</th>
@@ -100,5 +101,7 @@ if( isset($_POST["cari"]) ) {
 		<?php $i++; ?>
 		<?php } ?>
 	</table>
+</div>
+<script src="script.js"></script>
 </body>
 </html>
